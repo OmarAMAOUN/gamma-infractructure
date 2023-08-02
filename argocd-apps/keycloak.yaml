@@ -1,0 +1,20 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: keycloak
+  namespace: argocd
+spec:
+  destination:
+    namespace: keycloak-prod
+    server: https://kubernetes.default.svc
+  project: default
+  source:
+    helm:
+      values: |-
+        #
+    path: keycloak/
+    repoURL: https://github.com/itmwiw/gamma-infrastructure.git
+    targetRevision: HEAD
+  syncPolicy:
+    syncOptions:
+    - CreateNamespace=true

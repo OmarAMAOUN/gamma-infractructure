@@ -1,0 +1,75 @@
+apiVersion: keycloak.org/v1alpha1
+kind: KeycloakRealm
+metadata:
+  name: gamma-prod-realm
+  labels:
+    app: sso
+spec:
+  realm:
+    id: "gamma-prod-realm"
+    realm: "gamma-prod-realm"
+    enabled: True
+    displayName: "gamma prod realm"
+    eventsListeners:
+      - "metrics-listener"
+    users:
+      - username: "admin"
+        firstName: "Admin"
+        lastName: "Gamma"
+        email: ""
+        enabled: True
+        emailVerified: False
+        realmRoles:
+          - "offline_access"
+          - "uma_authorization"
+          - admin_fonc
+          - admin_tech
+          - ROLE_ADMIN_FONC_SI
+      - username: "superviseur"
+        firstName: "Superviseur"
+        lastName: "Gamma"
+        email: ""
+        enabled: True
+        emailVerified: False
+        realmRoles:
+          - "offline_access"
+          - "uma_authorization"
+          - ROLE_SUPERVISEUR
+          - superviseur
+      - username: "pilote"
+        firstName: "Pilote"
+        lastName: "Gamma"
+        email: ""
+        enabled: True
+        emailVerified: False
+        realmRoles:
+          - "offline_access"
+          - "uma_authorization"
+          - ROLE_PILOTE
+          - pilote
+      - username: "oamaoun"
+        firstName: "Omar"
+        lastName: "Amaoun"
+        email: "oamaoun@sorec.ma"
+        enabled: True
+        emailVerified: False
+        realmRoles:
+          - "offline_access"
+          - "uma_authorization"
+          - admin_tech
+        # clientRoles:
+          # account:
+            # - "manage-account"
+            # - "view-profile"
+          # realm-management:
+            # - "manage-users"
+            # - "view-users"
+            # - "query-users"
+            # - "create-client"
+  # realmOverrides:
+    # - forFlow: "browser"
+      # identityProvider: "openshift-v4"
+  instanceSelector:
+    matchLabels:
+      app: sso
+      

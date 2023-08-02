@@ -1,0 +1,38 @@
+apiVersion: keycloak.org/v1alpha1
+kind: Keycloak
+metadata:
+  name: keycloak-prod
+  labels:
+    app: sso
+spec:
+  instances: 2
+  # extensions:
+    # - https://github.com/aerogear/keycloak-metrics-spi/releases/download/1.0.4/keycloak-metrics-spi-1.0.4.jar
+  externalAccess:
+    enabled: True
+    host: keycloak.sorec.ma
+    # tlsTermination: passthrough
+  podDisruptionBudget:
+    enabled: True
+  # User needs to provision the external database
+  externalDatabase:
+    enabled: False
+  multiAvailablityZones:
+    enabled: True
+#  keycloakDeploymentSpec:
+#    resources:
+#      limits:
+#         cpu: 500m
+#         memory: 512Mi
+#      requests:
+#         cpu: 500m
+#         memory: 512Mi
+#  postgresDeploymentSpec:
+#    resources:
+#      limits:
+#         cpu: 500m
+#         memory: 512Mi
+#      requests:
+#         cpu: 500m
+#         memory: 512Mi
+  storageClassName: karbon-dr

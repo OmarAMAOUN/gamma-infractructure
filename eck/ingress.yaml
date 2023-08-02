@@ -1,0 +1,16 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  annotations:
+    ingress.kubernetes.io/rewrite-target: /
+  name: kibana
+  namespace: logging-apps
+spec:
+  rules:
+  - host: kibana.sorec.ma
+    http:
+      paths:
+      - backend:
+          serviceName: kibana-gamma-kb-http
+          servicePort: 5601
+        path: /

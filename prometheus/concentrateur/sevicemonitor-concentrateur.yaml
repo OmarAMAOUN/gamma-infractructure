@@ -1,0 +1,17 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  labels:
+    monitoring: apps
+  name: ms-conc-mon
+  namespace: monitoring-apps
+spec:
+  endpoints:
+    - interval: 30s
+      path: /management/prometheus
+      targetPort: 30001
+  namespaceSelector:
+    any: true
+  selector:
+    matchLabels:
+      tier: backend-concentrateur

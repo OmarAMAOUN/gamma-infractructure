@@ -1,0 +1,47 @@
+apiVersion: kafka.strimzi.io/v1beta1
+kind: KafkaUser
+metadata:
+  name: infocentre-user
+  labels:
+    strimzi.io/cluster: {{ .Values.clusterName }}
+spec:
+  authentication:
+    type: tls
+  authorization:
+    type: simple
+    acls:
+      - resource:
+          type: topic
+          name: Q_I5
+          patternType: literal
+        operation: Read
+      - resource:
+          type: topic
+          name: Q_I5
+          patternType: literal
+        operation: Describe
+      - resource:
+          type: topic
+          name: Q_I6
+          patternType: literal
+        operation: Read
+      - resource:
+          type: topic
+          name: Q_I6
+          patternType: literal
+        operation: Describe
+      - resource:
+          type: topic
+          name: Q_I38
+          patternType: literal
+        operation: Read
+      - resource:
+          type: topic
+          name: Q_I38
+          patternType: literal
+        operation: Describe
+      - resource:
+          type: group
+          name: infocentre
+          patternType: literal
+        operation: Read

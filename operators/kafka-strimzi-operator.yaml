@@ -1,0 +1,23 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: kafka-strimzi-operator
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: 'https://strimzi.io/charts/'
+    targetRevision: 0.21.1
+    #targetRevision: 0.28.0
+    helm:
+      values: |-
+        watchNamespaces:
+        - preprod-kafka
+        - prod-kafka
+    chart: strimzi-kafka-operator
+  destination:
+    server: 'https://kubernetes.default.svc'
+    namespace: kafka-strimzi-operator
+  syncPolicy:
+    syncOptions:
+      - CreateNamespace=true

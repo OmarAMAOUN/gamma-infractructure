@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: pvc-signaux-ma
+  namespace: concentrateur-prod
+spec:
+  accessModes:
+  - ReadWriteMany
+  resources:
+    requests:
+      storage: 8Gi
+  storageClassName: share-concentrateur

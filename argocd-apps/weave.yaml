@@ -1,0 +1,20 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: weave-scope
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: 'https://github.com/itmwiw/gamma-infrastructure.git'
+    path: weave-scope/
+    targetRevision: HEAD
+    directory:
+      recurse: true
+      jsonnet: {}
+  destination:
+    server: 'https://kubernetes.default.svc'
+    namespace: weave
+  syncPolicy:
+    syncOptions:
+      - CreateNamespace=true

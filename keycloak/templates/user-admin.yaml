@@ -1,0 +1,57 @@
+apiVersion: keycloak.org/v1alpha1
+kind: KeycloakUser
+metadata:
+  name: superviseur
+  labels:
+    app: sso
+spec:
+  user:
+    username: "superviseur"
+    firstName: "Superviseur"
+    lastName: "Gamma"
+    email: ""
+    enabled: True
+    emailVerified: False
+    realmRoles:
+      - "offline_access"
+      - "uma_authorization"
+      - ROLE_SUPERVISEUR
+      - superviseur
+    credentials:
+      - type: "password"
+        value: "superviseur12345"
+  realmSelector:
+    matchLabels:
+      app: sso
+apiVersion: keycloak.org/v1alpha1
+kind: KeycloakUser
+metadata:
+  name: oamaoun
+  labels:
+    app: sso
+spec:
+  user:
+    username: "oamaoun"
+    firstName: "Omar"
+    lastName: "Amaoun"
+    email: "oamaoun@sorec.ma"
+    enabled: True
+    emailVerified: False
+    realmRoles:
+      - "offline_access"
+      - "uma_authorization"
+      - admin_tech
+    credentials:
+      - type: "password"
+        value: "oamaoun12345"
+  realmSelector:
+    matchLabels:
+      app: sso      
+      
+      
+
+      
+      
+
+      
+      

@@ -1,0 +1,152 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: ingress-nginx
+  namespace: argocd
+spec:  
+  project: default
+  source:
+    repoURL: 'https://kubernetes.github.io/ingress-nginx'
+    targetRevision: 3.23.0
+    helm:
+      values: |+
+        controller:
+          extraArgs: {}
+          ## extraArgs:
+          ##   default-ssl-certificate: "<namespace>/<secret_name>"
+          service:
+            externalTrafficPolicy: "Local"
+            type: NodePort
+            nodePorts:
+              http: 32000
+              https: 32001
+          admissionWebhooks:
+            enabled: true
+            patch:
+              enabled: true
+              image:
+                pullPolicy: IfNotPresent
+                repository: docker.io/jettech/kube-webhook-certgen
+                tag: v1.5.1
+              podAnnotations:
+                co.elastic.logs/enabled: "true"
+              tolerations:
+              - effect: NoSchedule
+                key: type
+                operator: Equal
+                value: networking
+          affinity:
+            nodeAffinity:
+              requiredDuringSchedulingIgnoredDuringExecution:
+                nodeSelectorTerms:
+                - matchExpressions:
+                  - key: type
+                    operator: In
+                    values:
+                    - networking
+            podAntiAffinity:
+              preferredDuringSchedulingIgnoredDuringExecution:
+              - podAffinityTerm:
+                  labelSelector:
+                    matchExpressions:
+                    - key: app.kubernetes.io/name
+                      operator: In
+                      values:
+                      - ingress-nginx
+                  topologyKey: kubernetes.io/hostname
+                weight: 100
+          config:
+            brotli-level: '6'
+            brotli-types: >-
+              text/xml image/svg+xml application/x-font-ttf image/vnd.microsoft.icon
+              application/x-font-opentype application/json font/eot
+              application/vnd.ms-fontobject application/javascript font/otf
+              application/xml application/xhtml+xml text/javascript
+              application/x-javascript text/plain application/x-font-truetype
+              application/xml+rss image/x-icon font/opentype text/css image/x-win-bitmap
+            client_body_buffer_size: 256k
+            client_header_buffer_size: 32k
+            enable-brotli: 'true'
+            gzip-level: '1'
+            gzip-types: >-
+              application/atom+xml application/javascript application/x-javascript
+              application/json application/rss+xml application/vnd.ms-fontobject
+              application/x-font-ttf application/x-web-app-manifest+json
+              application/xhtml+xml application/xml font/opentype image/svg+xml
+              image/x-icon text/css text/javascript text/plain text/x-component
+            proxy-body-size: 20m
+            proxy-buffer-size: 32K
+            use-forward-headers: 'true'
+            use-gzip: 'true'
+            use-proxy-protocol: 'false'
+          hostNetwork: false
+          hostPort:
+            enabled: false
+            ports:
+              http: 80
+              https: 443
+          image:
+            allowPrivilegeEscalation: true
+            digest: sha256:9bba603b99bf25f6d117cf1235b6598c16033ad027b143c90fa5b3cc583c5713
+            pullPolicy: IfNotPresent
+            repository: k8s.gcr.io/ingress-nginx/controller
+            runAsUser: 101
+            tag: v0.43.0
+          ingressClass: nginx
+          livenessProbe:
+            failureThreshold: 5
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            port: 10254
+            successThreshold: 1
+            timeoutSeconds: 1
+          metrics:
+            enabled: true
+            port: 10254
+            prometheusRule:
+              additionalLabels: {}
+              enabled: false
+              rules: []
+            service:
+              annotations:
+                prometheus.io/port: "10254"
+                prometheus.io/scrape: "true"
+              externalIPs: []
+              labels:
+                monitoring: apps
+              loadBalancerSourceRanges: []
+              servicePort: 9913
+              type: ClusterIP
+            serviceMonitor:
+              additionalLabels: {}
+              enabled: false
+              metricRelabelings: []
+              namespace: ""
+              namespaceSelector: {}
+              scrapeInterval: 30s
+              targetLabels: []
+          podAnnotations:
+            co.elastic.logs/enabled: "true"
+          replicaCount: 10
+          reportNodeInternalIp: false
+          resources:
+            requests:
+              cpu: 1000m
+              memory: 1024Mi
+            limits:
+              cpu: 1000m
+              memory: 1024Mi
+          tolerations:
+          - effect: NoSchedule
+            key: type
+            operator: Equal
+            value: networking
+  
+  
+    chart: ingress-nginx
+  destination:
+    server: 'https://kubernetes.default.svc'
+    namespace: ingress-nginx
+  syncPolicy:
+    syncOptions:
+      - CreateNamespace=true

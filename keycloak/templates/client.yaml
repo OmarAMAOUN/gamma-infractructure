@@ -1,0 +1,477 @@
+apiVersion: keycloak.org/v1alpha1
+kind: KeycloakClient
+metadata:
+  name: calculateur-ms-alertes
+  labels:
+    app: sso
+spec:
+  realmSelector:
+    matchLabels:
+      app: sso
+  roles:
+    - name: GEST_ALERTES
+  client:
+    clientId: calculateur-ms-alertes
+    # secret: client-secret
+    clientAuthenticatorType: client-secret
+    protocol: openid-connect
+    defaultRoles:
+      - GEST_ALERTES
+---
+apiVersion: keycloak.org/v1alpha1
+kind: KeycloakClient
+metadata:
+  name: calculateur-ms-arrivee
+  labels:
+    app: sso
+spec:
+  realmSelector:
+    matchLabels:
+      app: sso
+  roles:
+    - name: GEST_ARRIVEE
+  client:
+    clientId: calculateur-ms-arrivee
+    # secret: client-secret
+    clientAuthenticatorType: client-secret
+    protocol: openid-connect
+    defaultRoles:
+      - GEST_ARRIVEE
+---
+apiVersion: keycloak.org/v1alpha1
+kind: KeycloakClient
+metadata:
+  name: calculateur-ms-offre
+  labels:
+    app: sso
+spec:
+  realmSelector:
+    matchLabels:
+      app: sso
+  roles:
+    - name: GEST_OFFRE
+  client:
+    clientId: calculateur-ms-offre
+    # secret: client-secret
+    clientAuthenticatorType: client-secret
+    protocol: openid-connect
+    defaultRoles:
+      - GEST_OFFRE
+---
+apiVersion: keycloak.org/v1alpha1
+kind: KeycloakClient
+metadata:
+  name: calculateur-ms-tro
+  labels:
+    app: sso
+spec:
+  realmSelector:
+    matchLabels:
+      app: sso
+  roles:
+    - name: GEST_TRO
+  client:
+    clientId: calculateur-ms-tro
+    # secret: client-secret
+    clientAuthenticatorType: client-secret
+    protocol: openid-connect
+    defaultRoles:
+      - GEST_TRO
+---
+apiVersion: keycloak.org/v1alpha1
+kind: KeycloakClient
+metadata:
+  name: calculateur-ms-trc
+  labels:
+    app: sso
+spec:
+  realmSelector:
+    matchLabels:
+      app: sso
+  roles:
+    - name: GEST_TRC
+  client:
+    clientId: calculateur-ms-trc
+    # secret: client-secret
+    clientAuthenticatorType: client-secret
+    protocol: openid-connect
+    defaultRoles:
+      - GEST_TRC
+---
+apiVersion: keycloak.org/v1alpha1
+kind: KeycloakClient
+metadata:
+  name: calculateur-ms-quu
+  labels:
+    app: sso
+spec:
+  realmSelector:
+    matchLabels:
+      app: sso
+  roles:
+    - name: GEST_QUU
+  client:
+    clientId: calculateur-ms-quu
+    # secret: client-secret
+    clientAuthenticatorType: client-secret
+    protocol: openid-connect
+    defaultRoles:
+      - GEST_QUU
+---
+apiVersion: keycloak.org/v1alpha1
+kind: KeycloakClient
+metadata:
+  name: calculateur-ms-pla
+  labels:
+    app: sso
+spec:
+  realmSelector:
+    matchLabels:
+      app: sso
+  roles:
+    - name: GEST_PLA
+  client:
+    clientId: calculateur-ms-pla
+    # secret: client-secret
+    clientAuthenticatorType: client-secret
+    protocol: openid-connect
+    defaultRoles:
+      - GEST_PLA
+---
+apiVersion: keycloak.org/v1alpha1
+kind: KeycloakClient
+metadata:
+  name: calculateur-ms-qip
+  labels:
+    app: sso
+spec:
+  realmSelector:
+    matchLabels:
+      app: sso
+  roles:
+    - name: GEST_QIP
+  client:
+    clientId: calculateur-ms-qip
+    # secret: client-secret
+    clientAuthenticatorType: client-secret
+    protocol: openid-connect
+    defaultRoles:
+      - GEST_QIP
+---
+apiVersion: keycloak.org/v1alpha1
+kind: KeycloakClient
+metadata:
+  name: calculateur-ms-qap
+  labels:
+    app: sso
+spec:
+  realmSelector:
+    matchLabels:
+      app: sso
+  roles:
+    - name: GEST_QAP
+  client:
+    clientId: calculateur-ms-qap
+    # secret: client-secret
+    clientAuthenticatorType: client-secret
+    protocol: openid-connect
+    defaultRoles:
+      - GEST_QAP
+---
+apiVersion: keycloak.org/v1alpha1
+kind: KeycloakClient
+metadata:
+  name: calculateur-ms-mlt
+  labels:
+    app: sso
+spec:
+  realmSelector:
+    matchLabels:
+      app: sso
+  roles:
+    - name: GEST_MLT
+  client:
+    clientId: calculateur-ms-mlt
+    # secret: client-secret
+    clientAuthenticatorType: client-secret
+    protocol: openid-connect
+    defaultRoles:
+      - GEST_MLT
+---
+apiVersion: keycloak.org/v1alpha1
+kind: KeycloakClient
+metadata:
+  name: calculateur-ms-jup
+  labels:
+    app: sso
+spec:
+  realmSelector:
+    matchLabels:
+      app: sso
+  roles:
+    - name: GEST_JUP
+  client:
+    clientId: calculateur-ms-jup
+    # secret: client-secret
+    clientAuthenticatorType: client-secret
+    protocol: openid-connect
+    defaultRoles:
+      - GEST_JUP
+---
+apiVersion: keycloak.org/v1alpha1
+kind: KeycloakClient
+metadata:
+  name: calculateur-ms-juo
+  labels:
+    app: sso
+spec:
+  realmSelector:
+    matchLabels:
+      app: sso
+  roles:
+    - name: GEST_JUO
+  client:
+    clientId: calculateur-ms-juo
+    # secret: client-secret
+    clientAuthenticatorType: client-secret
+    protocol: openid-connect
+    defaultRoles:
+      - GEST_JUO
+---
+apiVersion: keycloak.org/v1alpha1
+kind: KeycloakClient
+metadata:
+  name: calculateur-ms-jug
+  labels:
+    app: sso
+spec:
+  realmSelector:
+    matchLabels:
+      app: sso
+  roles:
+    - name: GEST_JUG
+  client:
+    clientId: calculateur-ms-jug
+    # secret: client-secret
+    clientAuthenticatorType: client-secret
+    protocol: openid-connect
+    defaultRoles:
+      - GEST_JUG
+---
+apiVersion: keycloak.org/v1alpha1
+kind: KeycloakClient
+metadata:
+  name: calculateur-ms-gag
+  labels:
+    app: sso
+spec:
+  realmSelector:
+    matchLabels:
+      app: sso
+  roles:
+    - name: GEST_GAG
+  client:
+    clientId: calculateur-ms-gag
+    # secret: client-secret
+    clientAuthenticatorType: client-secret
+    protocol: openid-connect
+    defaultRoles:
+      - GEST_GAG
+---
+apiVersion: keycloak.org/v1alpha1
+kind: KeycloakClient
+metadata:
+  name: calculateur-ms-flux-entrant
+  labels:
+    app: sso
+spec:
+  realmSelector:
+    matchLabels:
+      app: sso
+  roles:
+    - name: GEST_FLUX_ENTRANT
+  client:
+    clientId: calculateur-ms-flux-entrant
+    # secret: client-secret
+    clientAuthenticatorType: client-secret
+    protocol: openid-connect
+    defaultRoles:
+      - GEST_FLUX_ENTRANT
+---
+apiVersion: keycloak.org/v1alpha1
+kind: KeycloakClient
+metadata:
+  name: calculateur-ms-file-generator
+  labels:
+    app: sso
+spec:
+  realmSelector:
+    matchLabels:
+      app: sso
+  roles:
+    - name: GEST_FILE_GENERATOR
+  client:
+    clientId: calculateur-ms-file-generator
+    # secret: client-secret
+    clientAuthenticatorType: client-secret
+    protocol: openid-connect
+    defaultRoles:
+      - GEST_FILE_GENERATOR
+---
+apiVersion: keycloak.org/v1alpha1
+kind: KeycloakClient
+metadata:
+  name: calculateur-ms-repub
+  labels:
+    app: sso
+spec:
+  realmSelector:
+    matchLabels:
+      app: sso
+  roles:
+    - name: GEST_REPUB
+  client:
+    clientId: calculateur-ms-repub
+    # secret: client-secret
+    clientAuthenticatorType: client-secret
+    protocol: openid-connect
+    defaultRoles:
+      - GEST_REPUB
+---
+apiVersion: keycloak.org/v1alpha1
+kind: KeycloakClient
+metadata:
+  name: calculateur-ms-recap
+  labels:
+    app: sso
+spec:
+  realmSelector:
+    matchLabels:
+      app: sso
+  roles:
+    - name: GEST_RECAP
+  client:
+    clientId: calculateur-ms-recap
+    # secret: client-secret
+    clientAuthenticatorType: client-secret
+    protocol: openid-connect
+    defaultRoles:
+      - GEST_RECAP
+---
+apiVersion: keycloak.org/v1alpha1
+kind: KeycloakClient
+metadata:
+  name: calculateur-ms-pilotage
+  labels:
+    app: sso
+spec:
+  realmSelector:
+    matchLabels:
+      app: sso
+  roles:
+    - name: GEST_PILOTAGE
+  client:
+    clientId: calculateur-ms-pilotage
+    # secret: client-secret
+    clientAuthenticatorType: client-secret
+    protocol: openid-connect
+    defaultRoles:
+      - GEST_PILOTAGE
+---
+apiVersion: keycloak.org/v1alpha1
+kind: KeycloakClient
+metadata:
+  name: calculateur-ms-param
+  labels:
+    app: sso
+spec:
+  realmSelector:
+    matchLabels:
+      app: sso
+  roles:
+    - name: GEST_PARAM
+  client:
+    clientId: calculateur-ms-param
+    # secret: client-secret
+    clientAuthenticatorType: client-secret
+    protocol: openid-connect
+    defaultRoles:
+      - GEST_PARAM
+---
+apiVersion: keycloak.org/v1alpha1
+kind: KeycloakClient
+metadata:
+  name: calculateur-ms-transaction
+  labels:
+    app: sso
+spec:
+  realmSelector:
+    matchLabels:
+      app: sso
+  roles:
+    - name: GEST_TRANSACTION
+  client:
+    clientId: calculateur-ms-transaction
+    # secret: client-secret
+    clientAuthenticatorType: client-secret
+    protocol: openid-connect
+    defaultRoles:
+      - GEST_TRANSACTION
+---
+apiVersion: keycloak.org/v1alpha1
+kind: KeycloakClient
+metadata:
+  name: calculateur-ms-tfj
+  labels:
+    app: sso
+spec:
+  realmSelector:
+    matchLabels:
+      app: sso
+  roles:
+    - name: GEST_TFJ
+  client:
+    clientId: calculateur-ms-tfj
+    # secret: client-secret
+    clientAuthenticatorType: client-secret
+    protocol: openid-connect
+    defaultRoles:
+      - GEST_TFJ
+---
+apiVersion: keycloak.org/v1alpha1
+kind: KeycloakClient
+metadata:
+  name: calculateur-ms-authentification
+  labels:
+    app: sso
+spec:
+  realmSelector:
+    matchLabels:
+      app: sso
+  roles:
+    - name: GEST_AUTHENTIFICATION
+  client:
+    clientId: calculateur-ms-authentification
+    # secret: client-secret
+    clientAuthenticatorType: client-secret
+    protocol: openid-connect
+    defaultRoles:
+      - GEST_AUTHENTIFICATION
+---
+apiVersion: keycloak.org/v1alpha1
+kind: KeycloakClient
+metadata:
+  name: web-app
+  labels:
+    app: sso
+spec:
+  realmSelector:
+    matchLabels:
+      app: sso
+  client:
+    clientId: web_app
+    # secret: client-secret
+    clientAuthenticatorType: client-secret
+    protocol: openid-connect
+    publicClient: true
+

@@ -1,0 +1,77 @@
+show global variables;
+
+----
+avant changement mariadb stop
+https://docs.bitnami.com/general/infrastructure/mariadb-galera/administration/control-services/
+
+augmenter max_allowed_packer à 500M
+innodb_log_file_size=1000M
+mv ib_logfile0 ib_logfile0_old
+
+(éventuellement ajouter wait_timeout=7hours to second ex 3600*5)
+(éventuellement ajouter interactive_timeout=7hours to second ex 3600*5)
+
+
+
+
+persister les logs /opt/bitnami/mariadb/logs/
+
+
+
+-------------------------------------------
+scinder logs en deux et garder les logs des erreurs
+long_query_time | 2
+log_queries_not_using_indexes | OFF
+augmenter cpu à 4
+augmenter la mémoire à 8Go
+tmp_table_size étendre à 128mo
+max_heap_table_size aussi à 128mo
+buffer pool à 3go
+
+
+log query time actuellement 10s faire moins
+désactiver logs sans index
+buffer pool à 3go
+tmp_table_size étendre à 128mo
+max_heap_table_size aussi à 128mo
+options: gcs.fc_master_slave = yes;
+
+
+/opt/bitnami/mariadb/logs/error/mysqld.error
+
+
+----------------------- folders ---------------------------------------
+-- data --
+/var/nutanix/var/lib/kubelet/pods/a0ee8f9b-6db1-46c8-992a-acdcd6df42ec/volumes/kubernetes.io~csi/pvc-53994bab-703a-4dcb-8401-e40bdcd040ed/mount
+-- error logs -- 
+/var/nutanix/var/lib/kubelet/pods/bde2c82f-0efd-4470-9e8f-5a607d35d009/volumes/kubernetes.io~csi/pvc-3e36713e-a44a-4579-90cc-49d2bbf1bf15/mount
+
+---------------------------
+2022-03-17 16:21:51 0 [ERROR] InnoDB: Page [page id: space=0, page number=32801] log sequence number 131666005996 is in the future! Current system log sequence number 127937497624.
+2022-03-17 16:21:51 0 [ERROR] InnoDB: Your database may be corrupt or you may have copied the InnoDB tablespace but not the InnoDB log files. Please refer to https://mariadb.com/kb/en/library/innodb-recovery-modes/ for information about forcing recovery.
+2022-03-17 16:21:51 0 [ERROR] InnoDB: Page [page id: space=0, page number=289] log sequence number 132974616954 is in the future! Current system log sequence number 127937497624.
+2022-03-17 16:21:51 0 [ERROR] InnoDB: Your database may be corrupt or you may have copied the InnoDB tablespace but not the InnoDB log files. Please refer to https://mariadb.com/kb/en/library/innodb-recovery-modes/ for information about forcing recovery.
+2022-03-17 16:21:51 0 [ERROR] InnoDB: Page [page id: space=0, page number=361] log sequence number 132355530234 is in the future! Current system log sequence number 127937497624.
+2022-03-17 16:21:51 0 [ERROR] InnoDB: Your database may be corrupt or you may have copied the InnoDB tablespace but not the InnoDB log files. Please refer to https://mariadb.com/kb/en/library/innodb-recovery-modes/ for information about forcing recovery.
+2022-03-17 16:21:51 0 [ERROR] InnoDB: unsupported undo header state 104
+2022-03-17 16:21:51 0 [Note] InnoDB: Retry with innodb_force_recovery=5
+2022-03-17 16:21:51 0 [ERROR] InnoDB: Plugin initialization aborted with error Data structure corruption
+2022-03-17 16:21:51 0 [Note] InnoDB: Starting shutdown...
+command terminated with exit code 137
+------------> 
+save the database first
+mv ib_logfile0 ib_logfile0_old
+mv ibdata1 ibdata1.bak
+
+----
+
+vider journal:
+PURGE BINARY LOGS BEFORE NOW() - INTERVAL 3 DAY;
+or
+set global expire_logs_days=3;
+
+---- 
+libérer mémoire
+RESET QUERY CACHE;
+pour defgragmenter
+FLUSH QUERY CACHE;

@@ -1,0 +1,75 @@
+apiVersion: monitoring.coreos.com/v1
+kind: Prometheus
+metadata:
+  labels:
+    prometheus: apps
+  name: apps
+  namespace: monitoring-apps
+spec:
+  additionalScrapeConfigs:
+    key: prometheus-additional.yaml
+    name: additional-scrape-configs
+  affinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+        - matchExpressions:
+          - key: type
+            operator: In
+            values:
+            - monitoring
+    podAntiAffinity:
+      preferredDuringSchedulingIgnoredDuringExecution:
+      - podAffinityTerm:
+          labelSelector:
+            matchExpressions:
+            - key: prometheus
+              operator: In
+              values:
+              - apps
+          topologyKey: topology.kubernetes.io/zone
+        weight: 100
+  alerting:
+    alertmanagers:
+    - name: alertmanager-main
+      namespace: ntnx-system
+      port: web
+  podMonitorSelector:
+    matchLabels:
+      app: strimzi
+  replicas: 2
+  resources:
+    limits:
+      cpu: 2
+      memory: 3Gi
+    requests:
+      cpu: 1
+      memory: 2Gi
+  retention: 15d
+  ruleSelector:
+    matchLabels:
+      app: strimzi
+      role: alert-rules
+  securityContext:
+    fsGroup: 2000
+    runAsNonRoot: true
+    runAsUser: 1000
+  serviceAccountName: prometheus
+  serviceMonitorNamespaceSelector: {}
+  serviceMonitorSelector:
+    matchLabels:
+      monitoring: apps
+  storage:
+    volumeClaimTemplate:
+      spec:
+        resources:
+          requests:
+            storage: 100Gi
+        storageClassName: karbon-dr
+  tolerations:
+  - effect: NoSchedule
+    key: type
+    operator: Equal
+    value: monitoring
+  version: v2.11.0
+

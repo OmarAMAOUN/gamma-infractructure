@@ -1,0 +1,19 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  labels:
+    app: prometheus-calc-prod
+    prometheus: apps
+  name: ms-calc-mon-prod
+  namespace: monitoring-apps
+spec:
+  endpoints:
+  - interval: 10s
+    path: /actuator/prometheus
+    port: http
+  namespaceSelector:
+    matchNames:
+    - calculateur-prod
+  selector:
+    matchLabels:
+      group: ma.sorec

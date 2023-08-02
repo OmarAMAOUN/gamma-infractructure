@@ -1,0 +1,19 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  annotations:
+    nginx.ingress.kubernetes.io/configuration-snippet: |
+      rewrite ^(/mon)$ /mon/ permanent;
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
+    nginx.org/websocket-services: weave-scope-app
+  name: weave-scope-app
+  namespace: weave
+spec:
+  rules:
+  - http:
+      paths:
+      - backend:
+          serviceName: weave-scope-app
+          servicePort: 80
+        path: /mon(/|$)(.*)
+        pathType: ImplementationSpecific

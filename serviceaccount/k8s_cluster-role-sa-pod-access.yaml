@@ -1,0 +1,19 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: sa-podsaccess
+rules:
+- apiGroups:
+  - ""
+  - extensions
+  - apps
+  resources:
+  - configmaps
+  - pods
+  - services
+  - endpoints
+  - secrets
+  verbs:
+  - get
+  - list
+  - watch

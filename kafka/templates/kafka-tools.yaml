@@ -1,0 +1,54 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kafka-tools
+  namespace: prod-kafka
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      kafka: tools
+  template:
+    metadata:
+      name: kafka-tools
+      labels:
+        kafka: tools
+    spec:
+      affinity: {}
+      containers:
+        - command:
+            - /bin/sh
+            - "-c"
+            - "sleep 3600"
+          image: 'quay.io/strimzi/kafka:0.21.1-kafka-2.7.0'
+          imagePullPolicy: IfNotPresent
+          name: kafka-tools
+          resources:
+            limits:
+              cpu: '0.5'
+              memory: 1Gi
+            requests:
+              cpu: '0.5'
+              memory: 1Gi
+          volumeMounts:
+            - mountPath: /tmp
+              name: strimzi-tmp
+            - mountPath: /opt/kafka/custom-config/
+              name: kafka-metrics-and-logging
+            - mountPath: /var/opt/kafka
+              name: ready-files
+      restartPolicy: Always
+      serviceAccount: gamma-cluster-prod-kafka
+      serviceAccountName: gamma-cluster-prod-kafka
+      volumes:
+        - emptyDir:
+            medium: Memory
+          name: strimzi-tmp
+        - configMap:
+            defaultMode: 420
+            name: gamma-cluster-prod-kafka-config
+          name: kafka-metrics-and-logging
+        - emptyDir:
+            medium: Memory
+          name: ready-files
+

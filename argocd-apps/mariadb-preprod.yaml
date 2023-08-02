@@ -1,0 +1,22 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: mariadb-preprod
+  namespace: argocd
+spec:
+  destination:
+    namespace: concentrateur-preprod
+    server: https://kubernetes.default.svc
+  project: default
+  source:
+    helm:
+      #values: |-
+      valueFiles:
+        - values-preprod.yaml
+
+    path: mariadb/
+    repoURL: https://github.com/itmwiw/gamma-infrastructure.git
+    targetRevision: HEAD
+  syncPolicy:
+    syncOptions:
+    - CreateNamespace=true

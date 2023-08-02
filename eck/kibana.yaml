@@ -1,0 +1,52 @@
+apiVersion: kibana.k8s.elastic.co/v1
+kind: Kibana
+metadata:
+  name: kibana-gamma
+  namespace: logging-apps
+  labels:
+    logging: kibana-apps
+spec:
+  version: 7.10.1
+  count: 1
+  elasticsearchRef:
+    name: elasticsearch-gamma
+  http:
+    tls:
+      selfSignedCertificate:
+        disabled: true
+  podTemplate:
+    spec:
+      tolerations:
+      - key: "type"
+        operator: "Equal"
+        value: "monitoring"
+        effect: "NoSchedule"
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: "type"
+                operator: In
+                values:
+                - "monitoring"
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 100
+            podAffinityTerm:
+              labelSelector:
+                matchExpressions:
+                - key: logging
+                  operator: In
+                  values:
+                  - kibana-apps
+              topologyKey: topology.kubernetes.io/zone
+      containers:
+      - name: kibana
+        resources:
+          requests:
+            memory: 1Gi
+            cpu: 0.5
+          limits:
+            memory: 2Gi
+            cpu: 1

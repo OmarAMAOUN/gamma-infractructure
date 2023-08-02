@@ -1,0 +1,43 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: grafana
+  namespace: argocd
+spec:  
+  project: default
+  source:
+    repoURL: 'https://grafana.github.io/helm-charts'
+    targetRevision: 6.4.7
+    helm:
+      values: |-
+        datasources:
+          datasources.yaml:
+            apiVersion: 1
+            datasources:
+            - access: proxy
+              isDefault: true
+              name: Prometheus K8s
+              type: prometheus
+              url: http://prometheus-k8s.ntnx-system.svc.cluster.local:9090
+            - access: proxy
+              name: Prometheus Apps
+              type: prometheus
+              url: http://prometheus-apps.monitoring-apps.svc.cluster.local:9090
+        persistence:
+          enabled: true
+          size: 10Gi
+        plugins:
+        - grafana-piechart-panel
+        service:
+          type: ClusterIP
+        sidecar:
+          dashboards:
+            enabled: true
+            label: grafana_dashboard
+    chart: grafana
+  destination:
+    server: 'https://kubernetes.default.svc'
+    namespace: monitoring-apps
+  syncPolicy:
+    syncOptions:
+      - CreateNamespace=true

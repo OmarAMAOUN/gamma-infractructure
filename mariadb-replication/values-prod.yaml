@@ -1,0 +1,372 @@
+
+transaction:
+  image:
+    registry: docker.io
+    repository: bitnami/mariadb
+    #tag: 10.6.8-debian-11-r3
+    tag: 10.5.12-debian-10-r1
+  
+  architecture: replication
+  
+  auth:
+    rootPassword: "admin123"
+    database: transaction
+    username: "testuser"
+    password: "testuser@123"
+    replicationUser: replicator
+    replicationPassword: "replicator@123"
+  
+  primary:
+    configuration: |-
+      [mysqld]
+      skip-name-resolve
+      explicit_defaults_for_timestamp
+      basedir=/opt/bitnami/mariadb
+      plugin_dir=/opt/bitnami/mariadb/plugin
+      port=3306
+      socket=/opt/bitnami/mariadb/tmp/mysql.sock
+      tmpdir=/opt/bitnami/mariadb/tmp
+      max_allowed_packet=2G
+      bind-address=*
+      pid-file=/opt/bitnami/mariadb/tmp/mysqld.pid
+      character-set-server=UTF8
+      collation-server=utf8_general_ci
+      ## Logging
+      log-error=/opt/bitnami/mariadb/logs/mysqld.log
+      slow_query_log_file=/opt/bitnami/mariadb/logs/mysqld.log
+      log_queries_not_using_indexes=0
+      slow_query_log=1
+      long_query_time=2.0
+      ## InnoDB
+      innodb_log_file_size=1G
+      # 80% Memory is default reco.
+      # Need to re-evaluate when DB size grows
+      innodb_buffer_pool_size=4G
+      ## Binary Logging
+      expire_logs_days=3
+      ## Caches and Limits
+      tmp_table_size=128M
+      max_heap_table_size=128M
+  
+      [client]
+      port=3306
+      socket=/opt/bitnami/mariadb/tmp/mysql.sock
+      default-character-set=UTF8
+      plugin_dir=/opt/bitnami/mariadb/plugin
+  
+      [manager]
+      port=3306
+      socket=/opt/bitnami/mariadb/tmp/mysql.sock
+      pid-file=/opt/bitnami/mariadb/tmp/mysqld.pid
+  
+    podAnnotations:
+      co.elastic.logs/enabled: "true"
+      
+    extraEnvVars:
+      - name: TZ
+        value: "Africa/Casablanca"
+  
+    resources:
+      limits:
+         cpu: 11000m
+         memory: 12Gi
+      requests:
+         cpu: 10000m
+         memory: 12Gi
+         
+    nodeSelector: 
+      reserved: mariadb
+      
+    tolerations:
+    - key: "reserved"
+      operator: "Equal"
+      value: "mariadb"
+      effect: "NoSchedule"
+  
+  
+    livenessProbe:
+      enabled: true
+      ## Initializing the database could take some time
+      ##
+      initialDelaySeconds: 600
+      periodSeconds: 10
+      timeoutSeconds: 1
+      successThreshold: 1
+      failureThreshold: 3
+  
+    readinessProbe:
+      enabled: true
+      initialDelaySeconds: 30
+      periodSeconds: 10
+      timeoutSeconds: 1
+      successThreshold: 1
+      failureThreshold: 3
+      
+    persistence:
+      enabled: true
+      storageClass: "karbon-dr"
+      accessModes:
+        - ReadWriteOnce
+      size: 50Gi
+  
+  
+    extraVolumes: []
+    ## @param primary.extraVolumeMounts Optionally specify extra list of additional volumeMounts for the MariaDB Primary container(s)
+    ##
+    extraVolumeMounts: []
+    ## @param primary.initContainers Add additional init containers for the MariaDB Primary pod(s)
+    ##
+    service:
+      type: NodePort
+      ports:
+        mysql: 3306
+  
+    pdb:
+      create: true
+      minAvailable: 1
+  
+  secondary:
+    replicaCount: 1
+  
+    configuration: |-
+      [mysqld]
+      skip-name-resolve
+      explicit_defaults_for_timestamp
+      basedir=/opt/bitnami/mariadb
+      plugin_dir=/opt/bitnami/mariadb/plugin
+      port=3306
+      socket=/opt/bitnami/mariadb/tmp/mysql.sock
+      tmpdir=/opt/bitnami/mariadb/tmp
+      max_allowed_packet=2G
+      bind-address=*
+      pid-file=/opt/bitnami/mariadb/tmp/mysqld.pid
+      character-set-server=UTF8
+      collation-server=utf8_general_ci
+      ## Logging
+      log-error=/opt/bitnami/mariadb/logs/mysqld.log
+      slow_query_log_file=/opt/bitnami/mariadb/logs/mysqld.log
+      log_queries_not_using_indexes=0
+      slow_query_log=1
+      long_query_time=2.0
+      ## InnoDB
+      innodb_log_file_size=1G
+      # 80% Memory is default reco.
+      # Need to re-evaluate when DB size grows
+      innodb_buffer_pool_size=4G
+      ## Binary Logging
+      expire_logs_days=3
+      ## Caches and Limits
+      tmp_table_size=128M
+      max_heap_table_size=128M
+  
+      [client]
+      port=3306
+      socket=/opt/bitnami/mariadb/tmp/mysql.sock
+      default-character-set=UTF8
+      plugin_dir=/opt/bitnami/mariadb/plugin
+  
+      [manager]
+      port=3306
+      socket=/opt/bitnami/mariadb/tmp/mysql.sock
+      pid-file=/opt/bitnami/mariadb/tmp/mysqld.pid
+      
+    podAnnotations:
+      co.elastic.logs/enabled: "true"
+      
+    extraEnvVars:
+      - name: TZ
+        value: "Africa/Casablanca"
+  
+    resources:
+      limits:
+         cpu: 11000m
+         memory: 12Gi
+      requests:
+         cpu: 10000m
+         memory: 12Gi
+         
+    nodeSelector: 
+      reserved: mariadb
+      
+    tolerations:
+    - key: "reserved"
+      operator: "Equal"
+      value: "mariadb"
+      effect: "NoSchedule"
+  
+  
+    livenessProbe:
+      enabled: true
+      ## Initializing the database could take some time
+      ##
+      initialDelaySeconds: 600
+      periodSeconds: 10
+      timeoutSeconds: 1
+      successThreshold: 1
+      failureThreshold: 3
+  
+    readinessProbe:
+      enabled: true
+      initialDelaySeconds: 30
+      periodSeconds: 10
+      timeoutSeconds: 1
+      successThreshold: 1
+      failureThreshold: 3
+      
+    persistence:
+      enabled: true
+      storageClass: "karbon-dr"
+      accessModes:
+        - ReadWriteOnce
+      size: 50Gi
+  
+  
+    extraVolumes: []
+    ## @param primary.extraVolumeMounts Optionally specify extra list of additional volumeMounts for the MariaDB Primary container(s)
+    ##
+    extraVolumeMounts: []
+    ## @param primary.initContainers Add additional init containers for the MariaDB Primary pod(s)
+    ##
+    service:
+      type: NodePort
+      ports:
+        mysql: 3306
+  
+    pdb:
+      create: true
+      minAvailable: 1
+    
+others:
+
+  image:
+    registry: docker.io
+    repository: bitnami/mariadb
+    #tag: 10.6.8-debian-11-r3
+    tag: 10.5.12-debian-10-r1
+  
+  architecture: replication
+  
+  auth:
+    rootPassword: "admin123"
+    database: offre
+    username: "testuser"
+    password: "testuser@123"
+    replicationUser: replicator
+    replicationPassword: "replicator@123"
+  
+  primary:
+    podAnnotations:
+      co.elastic.logs/enabled: "true"
+      
+    extraEnvVars:
+      - name: TZ
+        value: "Africa/Casablanca"
+  
+    resources:
+      limits:
+         cpu: 1000m
+         memory: 2Gi
+      requests:
+         cpu: 1000m
+         memory: 2Gi
+         
+    livenessProbe:
+      enabled: true
+      ## Initializing the database could take some time
+      ##
+      initialDelaySeconds: 600
+      periodSeconds: 10
+      timeoutSeconds: 1
+      successThreshold: 1
+      failureThreshold: 3
+  
+    readinessProbe:
+      enabled: true
+      initialDelaySeconds: 30
+      periodSeconds: 10
+      timeoutSeconds: 1
+      successThreshold: 1
+      failureThreshold: 3
+      
+    persistence:
+      enabled: true
+      storageClass: "karbon-dr"
+      accessModes:
+        - ReadWriteOnce
+      size: 50Gi
+  
+  
+    extraVolumes: []
+    ## @param primary.extraVolumeMounts Optionally specify extra list of additional volumeMounts for the MariaDB Primary container(s)
+    ##
+    extraVolumeMounts: []
+    ## @param primary.initContainers Add additional init containers for the MariaDB Primary pod(s)
+    ##
+    service:
+      type: NodePort
+      ports:
+        mysql: 3306
+  
+    pdb:
+      create: true
+      minAvailable: 1
+  
+  secondary:
+    replicaCount: 1
+  
+    podAnnotations:
+      co.elastic.logs/enabled: "true"
+      
+    extraEnvVars:
+      - name: TZ
+        value: "Africa/Casablanca"
+  
+    resources:
+      limits:
+         cpu: 1000m
+         memory: 2Gi
+      requests:
+         cpu: 1000m
+         memory: 2Gi
+  
+    livenessProbe:
+      enabled: true
+      ## Initializing the database could take some time
+      ##
+      initialDelaySeconds: 600
+      periodSeconds: 10
+      timeoutSeconds: 1
+      successThreshold: 1
+      failureThreshold: 3
+  
+    readinessProbe:
+      enabled: true
+      initialDelaySeconds: 30
+      periodSeconds: 10
+      timeoutSeconds: 1
+      successThreshold: 1
+      failureThreshold: 3
+      
+    persistence:
+      enabled: true
+      storageClass: "karbon-dr"
+      accessModes:
+        - ReadWriteOnce
+      size: 50Gi
+  
+  
+    extraVolumes: []
+    ## @param primary.extraVolumeMounts Optionally specify extra list of additional volumeMounts for the MariaDB Primary container(s)
+    ##
+    extraVolumeMounts: []
+    ## @param primary.initContainers Add additional init containers for the MariaDB Primary pod(s)
+    ##
+    service:
+      type: NodePort
+      ports:
+        mysql: 3306
+  
+    pdb:
+      create: true
+      minAvailable: 1
+    

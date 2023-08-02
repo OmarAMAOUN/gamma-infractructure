@@ -1,0 +1,26 @@
+env: preprod
+clusterName: gamma-cluster
+kafka:
+  replicas: 3
+  storage:
+    storageClass: default-storageclass
+    size: 100Gi
+  resources:
+    limits:
+      cpu: 250m
+      memory: 1Gi
+    requests:
+      cpu: 250m
+      memory: 256Mi
+zookeeper:
+  replicas: 3
+  storage:
+    storageClass: default-storageclass
+    size: 10Gi
+  resources:
+    limits:
+      cpu: 250m
+      memory: 1Gi
+    requests:
+      cpu: 250m
+      memory: 256Mi

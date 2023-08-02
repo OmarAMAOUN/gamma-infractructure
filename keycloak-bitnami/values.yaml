@@ -1,0 +1,162 @@
+keycloak:
+  enabled: true
+  
+  global:
+    storageClass: "karbon-dr"
+  
+  image:
+    registry: docker.io
+    repository: bitnami/keycloak
+    tag: 15.0.2-debian-10-r45
+  
+  serviceDiscovery:
+    enabled: true
+    ## @param serviceDiscovery.protocol Sets the protocol that Keycloak nodes would use to discover new peers
+    ## Available protocols can be found at http://www.jgroups.org/javadoc3/org/jgroups/protocols/
+    ##
+    protocol: kubernetes.KUBE_PING
+    ## @param serviceDiscovery.properties Properties for the discovery protocol set in `serviceDiscovery.protocol` parameter
+    ## List of key=>value pairs
+    ## Example:
+    ## properties:
+    ##   - datasource_jndi_name=>"java:jboss/datasources/KeycloakDS"
+    ##   - initialize_sql=>"CREATE TABLE IF NOT EXISTS JGROUPSPING ( own_addr varchar(200) NOT NULL, cluster_name varchar(200) NOT NULL, created timestamp default current_timestamp, ping_data BYTEA, constraint PK_JGROUPSPING PRIMARY KEY (own_addr, cluster_name))"
+    ##
+    properties: []
+    ## @param serviceDiscovery.transportStack Transport stack for the discovery protocol set in `serviceDiscovery.protocol` parameter
+    ##
+    transportStack: tcp
+  ## Keycloak cache settings
+  ## ref: https://github.com/bitnami/bitnami-docker-keycloak#cluster-configuration
+  ##
+  cache:
+    ## @param cache.ownersCount Number of nodes that will replicate cached data
+    ##
+    ownersCount: 1
+    ## @param cache.authOwnersCount Number of nodes that will replicate cached authentication data
+    ##
+    authOwnersCount: 1
+    
+  rbac:
+    create: true
+    rules:
+      - apiGroups:
+          - ""
+        resources:
+          - pods
+        verbs:
+          - get
+          - list
+  
+  
+  replicaCount: 3
+  
+  resources:
+    limits:
+       cpu: 500m
+       memory: 512Mi
+    requests:
+       cpu: 200m
+       memory: 512Mi
+  
+  service:
+    type: ClusterIP
+    
+  postgresql:
+    enabled: false
+  
+  externalDatabase:
+    host: keycloak-postgresql-ha-pgpool
+    user: postgres
+    database: postgres
+       
+  auth:
+    existingSecretPerPassword:
+      keyMapping:
+        databasePassword: postgresql-password
+        adminPassword: admin-password
+        managementPassword: management-password
+      databasePassword:
+        name: keycloak-postgresql-ha-postgresql
+      adminPassword:
+        name: keycloak
+      managementPassword:
+        name: keycloak
+
+  extraEnvVars:
+    - name: KEYCLOAK_EXTRA_ARGS
+      value: "-Dkeycloak.import=/config/realm.json"      
+  extraVolumeMounts:
+    - name: config
+      mountPath: "/config"
+      readOnly: true
+  extraVolumes:
+    - name: config
+      configMap:
+        name: gamma-realm
+        items:
+        - key: "realm.json"
+          path: "realm.json"
+  
+postgresql-ha:
+  enabled: true
+
+  global:
+    storageClass: "karbon-dr"
+  
+  postgresqlImage:
+    registry: docker.io
+    repository: bitnami/postgresql-repmgr
+    tag: 11.13.0-debian-10-r40
+  
+  postgresql:
+    replicaCount: 2
+    resources:
+      limits:
+         cpu: 500m
+         memory: 512Mi
+      requests:
+         cpu: 200m
+         memory: 512Mi
+      
+  pgpoolImage:
+    registry: docker.io
+    repository: bitnami/pgpool
+    tag: 4.2.5-debian-10-r8
+  
+  pgpool:
+    replicaCount: 2
+    resources:
+      limits:
+         cpu: 250m
+         memory: 256Mi
+      requests:
+         cpu: 250m
+         memory: 256Mi
+      
+  metricsImage:
+    registry: docker.io
+    repository: bitnami/postgres-exporter
+    tag: 0.10.0-debian-10-r68
+  
+  metrics:
+    enabled: false
+    resources:
+      ## Example:
+      ## limits:
+      ##    cpu: 250m
+      ##    memory: 256Mi
+      ##
+      limits: {}
+      ## Examples:
+      ## requests:
+      ##    cpu: 250m
+      ##    memory: 256Mi
+      ##
+      requests: {}
+  
+  persistence:
+    enabled: true
+    storageClass: "karbon-dr"
+    size: 50Gi
+
