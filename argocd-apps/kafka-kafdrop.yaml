@@ -7,7 +7,7 @@ spec:
   project: default
   source:
     path: kafkadrop/
-    repoURL: https://github.com/itmwiw/gamma-infrastructure.git
+    repoURL: https://github.com/OmarAMAOUN/gamma-infrastructure.git
     targetRevision: HEAD
     helm:
       values: |-

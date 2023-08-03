@@ -6,7 +6,7 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: 'https://github.com/itmwiw/gamma-infrastructure.git'
+    repoURL: 'https://github.com/OmarAMAOUN/gamma-infrastructure.git'
     path: weave-scope/
     targetRevision: HEAD
     directory:

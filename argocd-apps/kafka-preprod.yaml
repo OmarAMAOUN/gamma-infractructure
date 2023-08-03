@@ -15,7 +15,7 @@ spec:
         - values-preprod.yaml
 
     path: kafka/
-    repoURL: https://github.com/itmwiw/gamma-infrastructure.git
+    repoURL: https://github.com/OmarAMAOUN/gamma-infrastructure.git
     targetRevision: HEAD
   syncPolicy:
     syncOptions:

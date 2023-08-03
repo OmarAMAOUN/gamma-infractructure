@@ -13,7 +13,7 @@ spec:
       values: |-
         #
     path: keycloak/
-    repoURL: https://github.com/itmwiw/gamma-infrastructure.git
+    repoURL: https://github.com/OmarAMAOUN/gamma-infrastructure.git
     targetRevision: HEAD
   syncPolicy:
     syncOptions:

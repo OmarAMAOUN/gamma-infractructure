@@ -10,7 +10,7 @@ spec:
   project: default
   source:
     path: eck/
-    repoURL: https://github.com/itmwiw/gamma-infrastructure.git
+    repoURL: https://github.com/OmarAMAOUN/gamma-infrastructure.git
     targetRevision: HEAD
   syncPolicy:
     syncOptions:
