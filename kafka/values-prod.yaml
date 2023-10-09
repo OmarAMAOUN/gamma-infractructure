@@ -35,27 +35,7 @@ kafka:
     requests:
       cpu: 2
       memory: 6Gi
-  additionalListners:
-  - name: external
-    authentication:
-      type: tls
-    authorization:
-      type: simple
-    configuration:
-      preferredNodePortAddressType: InternalDNS
-    port: 9094
-    tls: true
-    type: ingress
-    configuration:
-        bootstrap:
-          host: bootstrap.kafka.sorec.ma
-        brokers:
-        - broker: 0
-          host: broker-0.kafka.sorec.ma
-        - broker: 1
-          host: broker-1.kafka.sorec.ma
-        - broker: 2
-          host: broker-2.kafka.sorec.ma
+  additionalListners: []
 
 
 zookeeper:
