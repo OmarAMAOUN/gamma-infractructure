@@ -11,7 +11,7 @@ metadata:
     nginx.ingress.kubernetes.io/rewrite-target: /
 spec:
   rules:
-  - host: keycloak.sorec.ma
+  - host: keycloak-secours.sorec.ma
     http:
       paths:
       - path: /
