@@ -30,7 +30,7 @@ keycloak:
   ## Keycloak cache settings
 
 postgresql-ha:
-  enabled: true
+  enabled: false
 
   global:
     storageClass: "karbon-dr"
