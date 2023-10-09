@@ -46,7 +46,7 @@ spec:
         id: 0
         size: {{ .Values.kafka.storage.size }}
         type: persistent-claim
-    version: 2.7.0
+    version: 2.8.0
   kafkaExporter:
     enableSaramaLogging: true
     groupRegex: .*
