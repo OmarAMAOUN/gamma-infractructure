@@ -10,7 +10,7 @@ spec:
     # - https://github.com/aerogear/keycloak-metrics-spi/releases/download/1.0.4/keycloak-metrics-spi-1.0.4.jar
   externalAccess:
     enabled: False
-    host: keycloak-secours.sorec.ma
+    host: keycloak.acaps.ma
     # tlsTermination: passthrough
   podDisruptionBudget:
     enabled: True
@@ -35,4 +35,4 @@ spec:
 #      requests:
 #         cpu: 500m
 #         memory: 512Mi
-  storageClassName: karbon-dr
+  storageClassName: default-storageclass
