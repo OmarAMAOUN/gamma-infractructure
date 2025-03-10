@@ -3,7 +3,7 @@ keycloak:
   enabled: true
   
   global:
-    storageClass: "karbon-dr"
+    storageClass: "default-storageclass"
   
   image:
     registry: docker.io
@@ -33,7 +33,7 @@ postgresql-ha:
   enabled: false
 
   global:
-    storageClass: "karbon-dr"
+    storageClass: "default-storageclass"
   
   postgresqlImage:
     registry: docker.io
@@ -88,6 +88,6 @@ postgresql-ha:
   
   persistence:
     enabled: true
-    storageClass: "karbon-dr"
+    storageClass: "default-storageclass"
     size: 50Gi
 
